@@ -1,0 +1,37 @@
+#!/bin/bash
+
+service::config_set() {
+  config::check_or_set $1 $2 $SERVICE_CONFIG "${@:3}"
+}
+
+check() {
+  if [ "$DEBUG" = "true" ]; then
+    log::info "[DEBUG][service]: $SERVICE_CONFIG"
+    cat $SERVICE_CONFIG
+  fi
+
+  if [ ! -f "${SERVICE_CONFIGS}/config.json" ]; then
+    cp ${SERVICE_DIR}/conf/config.json ${SERVICE_CONFIGS}/config.json
+  fi
+
+  # service::config_set SERVICE_FASTGPT_PORT text "Port" 5432
+
+  service::config_set SERVICE_FASTGPT_ROOT_PASSWORD text "Root Password" "$(os::random_string 8)"
+
+  service::config_set SERVICE_FASTGPT_OPENAI_BASE_URL text "OpenAI Base URL" "https://api.openai.com/v1"
+  service::config_set SERVICE_FASTGPT_OPENAI_API_KEY text "OpenAI API Key"
+
+  service::config_set SERVICE_FASTGPT_PGVECTOR_HOST text "Postgres Host" "pgvector"
+  service::config_set SERVICE_FASTGPT_PGVECTOR_PORT text "Postgres Port" 5432
+  service::config_set SERVICE_FASTGPT_PGVECTOR_USER text "Postgres User" "fastgpt"
+  service::config_set SERVICE_FASTGPT_PGVECTOR_PASSWORD text "Postgres Password" 
+  service::config_set SERVICE_FASTGPT_PGVECTOR_DB text "Postgres DB" "fastgpt"
+
+  service::config_set SERVICE_FASTGPT_MONGODB_HOST text "MongoDB Host" "mongodb"
+  service::config_set SERVICE_FASTGPT_MONGODB_PORT text "MongoDB Port" 27017
+  service::config_set SERVICE_FASTGPT_MONGODB_USER text "MongoDB User" "fastgpt"
+  service::config_set SERVICE_FASTGPT_MONGODB_PASSWORD text "MongoDB Password"
+  service::config_set SERVICE_FASTGPT_MONGODB_DB text "MongoDB DB" "fastgpt"
+}
+
+check $@

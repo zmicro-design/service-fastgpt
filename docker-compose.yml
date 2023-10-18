@@ -1,0 +1,24 @@
+services:
+  fastgpt:
+    restart: always
+    image: whatwewant/fastgpt:${SERVICE_FASTGPT_IMAGE_VERSION}
+    # ports:
+    #   - 0.0.0.0:${SERVICE_FASTGPT_PORT}:3000
+    environment:
+      # 用户名为: root
+      DEFAULT_ROOT_PSW: ${SERVICE_FASTGPT_ROOT_PASSWORD}
+      OPENAI_BASE_URL: ${SERVICE_FASTGPT_OPENAI_BASE_URL:-"https://api.openai.com/v1"}
+      CHAT_API_KEY: ${SERVICE_FASTGPT_OPENAI_API_KEY}
+      DB_MAX_LINK: 5 # database max link
+      TOKEN_KEY: any
+      ROOT_KEY: root_key
+      FILE_TOKEN_KEY: filetoken
+      MONGODB_URI: mongodb://${SERVICE_FASTGPT_MONGODB_USER}:${SERVICE_FASTGPT_MONGODB_PASSWORD}@${SERVICE_FASTGPT_MONGODB_HOST}:${SERVICE_FASTGPT_MONGODB_PORT}/${SERVICE_FASTGPT_MONGODB_DB}
+      PG_URL: postgresql://${SERVICE_FASTGPT_PGVECTOR_USER}:${SERVICE_FASTGPT_PGVECTOR_PASSWORD}@${SERVICE_FASTGPT_PGVECTOR_HOST}:${SERVICE_FASTGPT_PGVECTOR_PORT}/${SERVICE_FASTGPT_PGVECTOR_DB}
+    volumes:
+      - ${SERVICE_CONFIGS}/config.json:/app/data/config.json
+      
+networks:
+  default:
+    external: true
+    name: compose-ingress
