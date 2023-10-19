@@ -10,8 +10,8 @@ check() {
     cat $SERVICE_CONFIG
   fi
 
-  if [ ! -f "${SERVICE_CONFIGS}/config.json" ]; then
-    cp ${SERVICE_DIR}/conf/config.json ${SERVICE_CONFIGS}/config.json
+  if [ ! -f "${SERVICE_CONFIGS}/config.sample.json" ]; then
+    cp ${SERVICE_DIR}/conf/config.sample.json ${SERVICE_CONFIGS}/config.json
   fi
 
   # service::config_set SERVICE_FASTGPT_PORT text "Port" 5432
